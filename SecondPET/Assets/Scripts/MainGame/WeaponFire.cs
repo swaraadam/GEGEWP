@@ -15,6 +15,8 @@ public class WeaponFire : MonoBehaviour {
     float timeToFire = 0;
     Transform firePoint;
 
+    [SerializeField] GameObject recoil;
+
 	// Use this for initialization
 	void Start () {
         firePoint = transform.Find("Fire");
@@ -23,32 +25,28 @@ public class WeaponFire : MonoBehaviour {
             Debug.LogError("Hello, no object guys!");
         }
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-		if(fireRate == 0)
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (Input.GetMouseButtonDown(0) && timeToFire <= 0)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Shoot();
-            }
+            timeToFire = 2;
+            Shoot();
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && Time.time > timeToFire)
-            {
-                timeToFire = Time.time + 1 / fireRate;
-                Shoot();
-            }
+            timeToFire -= Time.deltaTime;
         }
-	}
+    }
 
     void Shoot()
     {
         shootAudio.PlayOneShot(shootClip);
         Vector2 mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
         Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
+        Instantiate(recoil, new Vector3(mousePosition.x, mousePosition.y,-2),Quaternion.identity);
         RaycastHit2D hit = Physics2D.Raycast(firePointPosition, mousePosition - firePointPosition, 100, ToHit);
         bullet(firePointPosition, mousePosition);
         Debug.DrawLine(firePointPosition, (mousePosition - firePointPosition) * 100, Color.cyan);
