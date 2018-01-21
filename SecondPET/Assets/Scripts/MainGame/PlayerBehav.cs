@@ -10,7 +10,7 @@ public class PlayerBehav : MonoBehaviour {
     public Sprite grbkIsi, grbkKosong;
     public AudioSource AS;
     public AudioClip gameOver;
-    public GameObject endAnim;
+    public GameObject endAnim, scratch;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -57,20 +57,30 @@ public class PlayerBehav : MonoBehaviour {
 
     IEnumerator scaleGameOver()
     {
-        if (FindObjectOfType<GameOverController>().isFinish)
+        if (Application.loadedLevel == 7)
         {
-            gerobakBelakang.GetComponent<Animator>().enabled = false;
-            gerobakBelakang.sprite = grbkKosong;
-            endAnim.SetActive(true);
-            Debug.Log(gerobakBelakang.sprite);
-            yield return new WaitForSeconds(2.5f);
-            endAnim.SetActive(false);
+            Instantiate(scratch, transform.position, Quaternion.identity);
+            Application.LoadLevel(4);
         }
         else
         {
-            yield return null;
+
+            if (FindObjectOfType<GameOverController>().isFinish)
+            {
+                gerobakBelakang.GetComponent<Animator>().enabled = false;
+                gerobakBelakang.sprite = grbkKosong;
+                endAnim.SetActive(true);
+                Debug.Log(gerobakBelakang.sprite);
+                yield return new WaitForSeconds(2.5f);
+                endAnim.SetActive(false);
+            }
+            else
+            {
+                yield return null;
+            }
+            Tween GOB = gameOverBox.DOScale(0.5f, 1.5f);
         }
-        Tween GOB = gameOverBox.DOScale(0.5f, 1.5f);
+
     }
 
 

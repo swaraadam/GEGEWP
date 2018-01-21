@@ -52,17 +52,31 @@ public class WeaponFire : MonoBehaviour {
         Debug.DrawLine(firePointPosition, (mousePosition - firePointPosition) * 100, Color.cyan);
         if(hit.collider != null)
         {
-            Debug.DrawLine(firePointPosition, hit.point, Color.red);
-            if (Application.loadedLevel != 7)
+            if (hit.collider.name == "Boss")
             {
-                FindObjectOfType<GameManager>().Coin += 100;
-                PlayerPrefs.SetInt("Coin", FindObjectOfType<GameManager>().Coin);
+                Debug.Log("boss");
+                if (FindObjectOfType<BossBehav>().isShieldGone)
+                {
+                    Debug.Log("hited boss");
+                    FindObjectOfType<BossBehav>().isShieldGone = false;
+                    FindObjectOfType<BossBehav>().bossLife--;
+                    FindObjectOfType<BossBehav>().bossAnim = 2;
+                }
             }
-            Destroy(hit.collider.gameObject);
-
-            if (hit.collider.name == "Civil")
+            else
             {
-                FindObjectOfType<PlayerBehav>().GameOver();
+                Debug.DrawLine(firePointPosition, hit.point, Color.red);
+                if (Application.loadedLevel != 7)
+                {
+                    FindObjectOfType<GameManager>().Coin += 100;
+                    PlayerPrefs.SetInt("Coin", FindObjectOfType<GameManager>().Coin);
+                }
+                Destroy(hit.collider.gameObject);
+
+                if (hit.collider.name == "Civil")
+                {
+                    FindObjectOfType<PlayerBehav>().GameOver();
+                }
             }
         }
     }

@@ -1,27 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class BossBehav : MonoBehaviour {
 
-    enum bossCondition
-    {
-        idle,
-        transIJ,
-        jurus,
-        transJA,
-        attacked,
-        transAI
-    }
-
     private Animator animator;
-    private int bossAnim;
+    public int bossAnim;
     private Vector3 initPos, shieldPos;
     [SerializeField]
     private Transform shield;
+    [SerializeField] Sprite one, two, three, four, five;
 
+    public Image barHealth;
+    public bool isShieldGone;
     public GameObject firePrefab;
+    public int bossLife;
+
 
 	// Use this for initialization
 	void Start () {
@@ -31,28 +27,63 @@ public class BossBehav : MonoBehaviour {
         Camera.main.projectionMatrix = mat;
 
         //init
+        isShieldGone = false;
+        bossLife = 5;
         shieldPos = shield.localPosition;
         initPos = transform.position;
         animator = GetComponent<Animator>();
         StartCoroutine(justDoIt());
 	}
+
+    private void FixedUpdate()
+    {
+        animator.SetInteger("BossAnim", bossAnim);
+        switch (bossLife)
+        {
+            case 5:
+                {
+                    barHealth.sprite = one;
+                    break;
+                }
+            case 4:
+                {
+                    barHealth.sprite = two;
+                    break;
+                }
+            case 3:
+                {
+                    barHealth.sprite = three;
+                    break;
+                }
+            case 2:
+                {
+                    barHealth.sprite = four;
+                    break;
+                }
+            case 1:
+                {
+                    barHealth.sprite = five;
+                    Application.LoadLevel(4);
+                    break;
+                }
+        }
+    }
+
     IEnumerator justDoIt()
     {
         int loop = 0;
         while (loop < 5)
         {
             bossAnim = 0;
-            animator.SetInteger("BossAnim", bossAnim);
             shield.DORotate(new Vector3(0, 0, Random.Range(1, 180)), 4);
-            Tween moveRandom = transform.DOMove(new Vector3(Random.Range(transform.position.x - 2f, transform.position.x + 1.5f), Random.Range(transform.position.y - 2.2f, transform.position.y + 1.5f), transform.position.z), 2);
+            Tween moveRandom = transform.DOMove(new Vector3(Random.Range(transform.position.x - 2f, transform.position.x + 1.5f), Random.Range(transform.position.y - 2.2f, transform.position.y + 1.5f), transform.position.z), 1);
             yield return moveRandom.WaitForCompletion();
-            Tween moveBack = transform.DOMove(initPos, 2);
+            Tween moveBack = transform.DOMove(initPos, 1);
             yield return moveBack.WaitForCompletion();
             loop++;
         }
         //Transition
         bossAnim = 1;
-        animator.SetInteger("BossAnim", bossAnim);
         yield return new WaitForSeconds(1);
         shield.DOScale(0.1f, 2.5f);
         shield.DORotate(new Vector3(0, 0, 300), 2.5f);
@@ -68,8 +99,9 @@ public class BossBehav : MonoBehaviour {
         shield.GetComponent<SpriteRenderer>().enabled = false;
         Tween moveDown = transform.DOMove(initPos, 2f);
         yield return moveDown.WaitForCompletion();
-
-        yield return new WaitForSeconds(3f);
+        isShieldGone = true;
+        yield return new WaitForSeconds(2.5f);
+        isShieldGone = false;
         shield.GetComponent<SpriteRenderer>().enabled = true;
 
         StartCoroutine(justDoIt());
