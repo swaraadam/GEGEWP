@@ -48,13 +48,16 @@ public class WeaponFire : MonoBehaviour {
         Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
         Instantiate(recoil, new Vector3(mousePosition.x, mousePosition.y,-2),Quaternion.identity);
         RaycastHit2D hit = Physics2D.Raycast(firePointPosition, mousePosition - firePointPosition, 100, ToHit);
-        bullet(firePointPosition, mousePosition);
+        //bullet(firePointPosition, mousePosition);
         Debug.DrawLine(firePointPosition, (mousePosition - firePointPosition) * 100, Color.cyan);
         if(hit.collider != null)
         {
             Debug.DrawLine(firePointPosition, hit.point, Color.red);
-            FindObjectOfType<GameManager>().Coin += 100;
-            PlayerPrefs.SetInt("Coin", FindObjectOfType<GameManager>().Coin);
+            if (Application.loadedLevel != 7)
+            {
+                FindObjectOfType<GameManager>().Coin += 100;
+                PlayerPrefs.SetInt("Coin", FindObjectOfType<GameManager>().Coin);
+            }
             Destroy(hit.collider.gameObject);
 
             if (hit.collider.name == "Civil")

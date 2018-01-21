@@ -10,6 +10,7 @@ public class LoadingScene : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        PlayerPrefs.SetInt("Level", 1);
         StartCoroutine(loadingScene(1.2f, 5));
     }
 	

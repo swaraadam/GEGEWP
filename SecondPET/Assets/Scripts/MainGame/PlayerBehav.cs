@@ -47,7 +47,10 @@ public class PlayerBehav : MonoBehaviour {
 
     public void GameOver()
     {
-        FindObjectOfType<MoveOnPath>().enabled = false;
+        if (Application.loadedLevel != 7)
+        {
+            FindObjectOfType<MoveOnPath>().enabled = false;
+        }
         FindObjectOfType<WeaponFire>().enabled = false;
         StartCoroutine(scaleGameOver());
     }

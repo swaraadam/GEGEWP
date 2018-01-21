@@ -13,7 +13,6 @@ public class MOVIETEST : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("MovieEnd");
             Application.LoadLevel(3);
         }
     }

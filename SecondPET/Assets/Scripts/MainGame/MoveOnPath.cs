@@ -43,6 +43,13 @@ public class MoveOnPath : MonoBehaviour {
             FindObjectOfType<GameOverController>().isFinish = true;
             FindObjectOfType<PlayerBehav>().GameOver();
             AS.PlayOneShot(levelComplete);
+            if (Application.loadedLevel == 5 && PlayerPrefs.GetInt("Level") < 2){
+                PlayerPrefs.SetInt("Level", 2);
+            }
+            if (Application.loadedLevel == 6 && PlayerPrefs.GetInt("Level") < 3)
+            {
+                PlayerPrefs.SetInt("Level", 3);
+            }
         }
 	}
 }

@@ -13,6 +13,9 @@ public class MapController : MonoBehaviour {
     public AudioClip buttonClicked;
     public Text score;
 
+    RaycastHit2D Hit;
+    public LayerMask mask;
+
     //tutorial map related
     [SerializeField] SpriteRenderer tutorHolder;
     [SerializeField] Sprite[] tutorImages;
@@ -72,7 +75,7 @@ public class MapController : MonoBehaviour {
         }
         else
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && layerDetector())
             {
                 if (isAchievment)
                 {
@@ -86,15 +89,8 @@ public class MapController : MonoBehaviour {
                 }
                 if (isChapter)
                 {
-                    if (Input.mousePosition.x < 100 ||
-                        Input.mousePosition.x > 460 ||
-                        Input.mousePosition.y < 53 ||
-                        Input.mousePosition.y > 280)
-                    {
-                        print(Input.mousePosition);
-                        StartCoroutine(chapterOpen(0f));
-                        isChapter = false;
-                    }
+                    StartCoroutine(chapterOpen(0f));
+                    isChapter = false;
                 }
                 if (isQuit)
                 {
@@ -113,6 +109,17 @@ public class MapController : MonoBehaviour {
         {
             StartCoroutine(quitOpen(0.4f));
         }
+    }
+
+    private bool layerDetector()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Hit = Physics2D.GetRayIntersection(ray, 10, mask);
+        if (Hit.collider.name == "GameObject")
+        {
+            return true;
+        }
+        else return false;
     }
 
     public void tutorialButton()
@@ -139,7 +146,18 @@ public class MapController : MonoBehaviour {
 
     public void level1Selected()
     {
+        Debug.Log("level1");
         Application.LoadLevel(5);
+    }
+    public void level2Selected()
+    {
+        Debug.Log("level2");
+        Application.LoadLevel(6);
+    }
+    public void level3Selected()
+    {
+        Debug.Log("level3");
+        Application.LoadLevel(7);
     }
 
     public void ButtonKu(int i)
@@ -152,7 +170,7 @@ public class MapController : MonoBehaviour {
             StartCoroutine(itemOpen(0.5f));
         }else if (i == 4)
         {
-            StartCoroutine(chapterOpen(0.5f));
+            StartCoroutine(chapterOpen(0.4f));
         }else if (i == 5)
         {
             StartCoroutine(settingOpen(0.5f));
