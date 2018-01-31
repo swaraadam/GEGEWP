@@ -10,7 +10,7 @@ public class WeaponFire : MonoBehaviour {
     public LayerMask ToHit;
     public GameObject laserEffect, damageEffect;
     public AudioSource shootAudio;
-    public AudioClip shootClip;
+    public AudioClip shootClip, pendTembak, JombiTembak;
 
     float timeToFire = 0;
     Transform firePoint;
@@ -32,7 +32,7 @@ public class WeaponFire : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0) && timeToFire <= 0)
         {
-            timeToFire = 2;
+            timeToFire = 1.2f;
             Shoot();
         }
         else
@@ -66,17 +66,20 @@ public class WeaponFire : MonoBehaviour {
             else
             {
                 Debug.DrawLine(firePointPosition, hit.point, Color.red);
-                if (Application.loadedLevel != 7)
+                if (hit.collider.name == "Civil")
                 {
+                    shootAudio.PlayOneShot(pendTembak);
+                    FindObjectOfType<PlayerBehav>().GameOver();
+                }else if (hit.collider.name == "Fire")
+                {
+                    Debug.Log("sa");
+                }else if (Application.loadedLevel != 7)
+                {
+                    shootAudio.PlayOneShot(JombiTembak);
                     FindObjectOfType<GameManager>().Coin += 100;
                     PlayerPrefs.SetInt("Coin", FindObjectOfType<GameManager>().Coin);
                 }
                 Destroy(hit.collider.gameObject);
-
-                if (hit.collider.name == "Civil")
-                {
-                    FindObjectOfType<PlayerBehav>().GameOver();
-                }
             }
         }
     }

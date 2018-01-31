@@ -18,7 +18,7 @@ public class fireLvl2 : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.25f);
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.1f);
 	}
 
     private void OnTriggerEnter2D(Collider2D collision)

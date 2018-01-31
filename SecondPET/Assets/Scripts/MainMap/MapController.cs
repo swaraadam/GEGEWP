@@ -147,17 +147,20 @@ public class MapController : MonoBehaviour {
     public void level1Selected()
     {
         Debug.Log("level1");
-        Application.LoadLevel(5);
+        PlayerPrefs.SetInt("lvlID", 1);
+        Application.LoadLevel(8);
     }
     public void level2Selected()
     {
         Debug.Log("level2");
-        Application.LoadLevel(6);
+        PlayerPrefs.SetInt("lvlID", 2);
+        Application.LoadLevel(8);
     }
     public void level3Selected()
     {
         Debug.Log("level3");
-        Application.LoadLevel(7);
+        PlayerPrefs.SetInt("lvlID", 3);
+        Application.LoadLevel(8);
     }
 
     public void ButtonKu(int i)
@@ -196,7 +199,8 @@ public class MapController : MonoBehaviour {
         //achievmentPage.localScale = new Vector3(0, 0, 0);
         AS.PlayOneShot(buttonClicked);
         yield return null;
-        itemPage.DOScale(scale, 0.2f);
+        itemPage.DOScaleX(scale+0.1f, 0.2f);
+        itemPage.DOScaleY(scale, 0.2f);
         isItem = true;
     }
 

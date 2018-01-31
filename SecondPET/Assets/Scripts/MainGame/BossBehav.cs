@@ -94,7 +94,7 @@ public class BossBehav : MonoBehaviour {
         yield return moveUp.WaitForCompletion();
         shield.DOScale(1f, 0.1f);
         shield.DOLocalMove(shieldPos, 0.1f);
-        GameObject fireBall = Instantiate(firePrefab, transform.position, Quaternion.identity);
+        GameObject fireBall = Instantiate(firePrefab, transform.position, Quaternion.Euler(0,0,-225f));
         yield return new WaitForSeconds(3);
         shield.GetComponent<SpriteRenderer>().enabled = false;
         Tween moveDown = transform.DOMove(initPos, 2f);

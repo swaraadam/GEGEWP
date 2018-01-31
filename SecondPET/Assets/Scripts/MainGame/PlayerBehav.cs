@@ -9,7 +9,7 @@ public class PlayerBehav : MonoBehaviour {
     public SpriteRenderer gerobakBelakang;
     public Sprite grbkIsi, grbkKosong;
     public AudioSource AS;
-    public AudioClip gameOver;
+    public AudioClip gameOver, pendDapet;
     public GameObject endAnim, scratch;
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -30,6 +30,7 @@ public class PlayerBehav : MonoBehaviour {
 
         if (collision.transform.tag == "Civil")
         {
+            AS.PlayOneShot(pendDapet);
             Destroy(collision.gameObject);
             gerobakBelakang.sprite = grbkIsi;
             gerobakBelakang.GetComponent<Animator>().enabled = true;
